@@ -1,0 +1,25 @@
+package layout
+
+type NavItem struct {
+	Title  string
+	URL    string
+	Active bool
+}
+
+func NewNavItem(title, url string) NavItem {
+	return NavItem{
+		Title: title,
+		URL:   url,
+	}
+}
+
+func (n NavItem) IsActive(active bool) NavItem {
+	n.Active = active
+	return n
+}
+
+templ (n NavItem) R() {
+	<a class={ "nav-link", templ.KV("active", n.Active) } href={ templ.SafeURL(n.URL) }>
+		<span class="nav-link-title">{ n.Title }</span>
+	</a>
+}
