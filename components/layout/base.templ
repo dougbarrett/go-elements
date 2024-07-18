@@ -4,6 +4,7 @@ type Base struct {
 	navItems        []NavItem
 	isSidebarLayout bool
 	pageTitle       string
+	dontWrapBody    bool
 }
 
 func NewBase() Base {
@@ -22,6 +23,11 @@ func (b Base) SetIsSidebarLayout(isSidebarLayout bool) Base {
 
 func (b Base) SetPageTitle(pageTitle string) Base {
 	b.pageTitle = pageTitle
+	return b
+}
+
+func (b Base) SetDontWrapBody(dontWrapBody bool) Base {
+	b.dontWrapBody = dontWrapBody
 	return b
 }
 
@@ -203,11 +209,15 @@ templ (b Base) navbarLayout() {
 			}
 			<div class="page-body">
 				<div class="container-xl">
-					<div class="card">
-						<div class="card-body">
-							{ children... }
+					if b.dontWrapBody {
+						{ children... }
+					} else {
+						<div class="card">
+							<div class="card-body">
+								{ children... }
+							</div>
 						</div>
-					</div>
+					}
 				</div>
 			</div>
 		</div>
@@ -254,7 +264,15 @@ templ (b Base) sidebarLayout() {
 			}
 			<div class="page-body">
 				<div class="container-xl">
-					{ children... }
+					if b.dontWrapBody {
+						{ children... }
+					} else {
+						<div class="card">
+							<div class="card-body">
+								{ children... }
+							</div>
+						</div>
+					}
 				</div>
 			</div>
 		</div>
